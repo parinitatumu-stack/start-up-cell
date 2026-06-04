@@ -43,8 +43,8 @@ function StartupPage() {
 
   const save = async () => {
     if (!user) return;
-    const payload = { ...form, user_id: user.id };
-    if (!payload.name || !payload.domain) return toast.error("Name and domain are required.");
+    if (!form.name || !form.domain) return toast.error("Name and domain are required.");
+    const payload = { ...form, user_id: user.id, name: form.name, domain: form.domain };
     if (startup) {
       const { error } = await supabase.from("startups").update(payload).eq("id", startup.id);
       if (error) return toast.error(error.message);
