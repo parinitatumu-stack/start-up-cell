@@ -12,13 +12,19 @@ import { toast } from "sonner";
 import { ensureMilestones, setMilestone } from "@/lib/startup";
 import { notify } from "@/lib/notify";
 
+const DOMAINS = ["AgriTech", "FinTech", "HealthTech", "EdTech", "AI & Data Science", "Other"];
+
 const FIELDS = [
   ["name", "Startup name", "input"],
-  ["domain", "Domain (AgriTech, FinTech, HealthTech, EdTech, AI & Data Science, …)", "input"],
+  ["domain", "Domain", "select"],
+  ["founder_name", "Founder name", "input"],
+  ["team_members", "Team members (comma-separated)", "input"],
+  ["contact_email", "Contact email", "input"],
+  ["contact_number", "Contact number", "input"],
   ["description", "One-line description", "input"],
   ["vision", "Vision", "textarea"],
   ["problem_statement", "Problem statement", "textarea"],
-  ["solution", "Solution", "textarea"],
+  ["solution", "Proposed solution", "textarea"],
   ["target_audience", "Target audience", "input"],
   ["market_opportunity", "Market opportunity", "textarea"],
   ["business_model", "Business model", "textarea"],
@@ -50,7 +56,7 @@ function StartupPage() {
       if (error) return toast.error(error.message);
       toast.success("Startup updated.");
     } else {
-      const { data, error } = await supabase.from("startups").insert({ ...payload, status: "active" }).select().single();
+      const { data, error } = await supabase.from("startups").insert({ ...payload, status: "draft" }).select().single();
       if (error) return toast.error(error.message);
       await ensureMilestones(data.id);
       await setMilestone(data.id, "Startup Registered", true);
@@ -72,6 +78,15 @@ function StartupPage() {
             <Label className="text-xs uppercase tracking-wider text-muted-foreground">{label}</Label>
             {kind === "textarea" ? (
               <Textarea rows={3} className="mt-1.5" value={form[key] ?? ""} onChange={(e) => setForm({ ...form, [key]: e.target.value })} />
+            ) : kind === "select" ? (
+              <select
+                className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={form[key] ?? ""}
+                onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+              >
+                <option value="">Select a domain…</option>
+                {DOMAINS.map((d) => <option key={d} value={d}>{d}</option>)}
+              </select>
             ) : (
               <Input className="mt-1.5" value={form[key] ?? ""} onChange={(e) => setForm({ ...form, [key]: e.target.value })} />
             )}

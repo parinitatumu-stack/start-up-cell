@@ -3,7 +3,7 @@ import { Logo } from "@/components/Logo";
 import { useProfile, useSession } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Bell, LogOut, LayoutDashboard, Rocket, FileText, GraduationCap, Trophy, Sparkles, Users, ShieldCheck, BookOpen, type LucideIcon } from "lucide-react";
+import { Bell, LogOut, LayoutDashboard, Rocket, FileText, GraduationCap, Trophy, Sparkles, Users, ShieldCheck, BookOpen, ClipboardCheck, type LucideIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, type ReactNode } from "react";
 
@@ -14,6 +14,7 @@ const studentNav: NavItem[] = [
   { to: "/app/startup", label: "My Startup", icon: Rocket },
   { to: "/app/proposal", label: "Proposal", icon: FileText },
   { to: "/app/mentor", label: "Mentor", icon: GraduationCap },
+  { to: "/app/checklist", label: "Pitch Prep", icon: ClipboardCheck },
   { to: "/app/mvp", label: "MVP", icon: BookOpen },
   { to: "/app/demo-day", label: "Demo Day", icon: Trophy },
   { to: "/app/ai", label: "AI Pitch Check", icon: Sparkles },
