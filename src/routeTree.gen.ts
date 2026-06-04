@@ -14,6 +14,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AppStartupRouteImport } from './routes/app.startup'
 import { Route as AppProposalRouteImport } from './routes/app.proposal'
 import { Route as AppNotificationsRouteImport } from './routes/app.notifications'
@@ -21,6 +22,11 @@ import { Route as AppMvpRouteImport } from './routes/app.mvp'
 import { Route as AppMentorRouteImport } from './routes/app.mentor'
 import { Route as AppDemoDayRouteImport } from './routes/app.demo-day'
 import { Route as AppAiRouteImport } from './routes/app.ai'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as AdminStoriesRouteImport } from './routes/admin.stories'
+import { Route as AdminStartupsRouteImport } from './routes/admin.startups'
+import { Route as AdminProposalsRouteImport } from './routes/admin.proposals'
+import { Route as AdminMentorsRouteImport } from './routes/admin.mentors'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -46,6 +52,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AppStartupRoute = AppStartupRouteImport.update({
   id: '/startup',
@@ -82,12 +93,42 @@ const AppAiRoute = AppAiRouteImport.update({
   path: '/ai',
   getParentRoute: () => AppRoute,
 } as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStoriesRoute = AdminStoriesRouteImport.update({
+  id: '/stories',
+  path: '/stories',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStartupsRoute = AdminStartupsRouteImport.update({
+  id: '/startups',
+  path: '/startups',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProposalsRoute = AdminProposalsRouteImport.update({
+  id: '/proposals',
+  path: '/proposals',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMentorsRoute = AdminMentorsRouteImport.update({
+  id: '/mentors',
+  path: '/mentors',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/admin/mentors': typeof AdminMentorsRoute
+  '/admin/proposals': typeof AdminProposalsRoute
+  '/admin/startups': typeof AdminStartupsRoute
+  '/admin/stories': typeof AdminStoriesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/app/ai': typeof AppAiRoute
   '/app/demo-day': typeof AppDemoDayRoute
   '/app/mentor': typeof AppMentorRoute
@@ -95,12 +136,17 @@ export interface FileRoutesByFullPath {
   '/app/notifications': typeof AppNotificationsRoute
   '/app/proposal': typeof AppProposalRoute
   '/app/startup': typeof AppStartupRoute
+  '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
+  '/admin/mentors': typeof AdminMentorsRoute
+  '/admin/proposals': typeof AdminProposalsRoute
+  '/admin/startups': typeof AdminStartupsRoute
+  '/admin/stories': typeof AdminStoriesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/app/ai': typeof AppAiRoute
   '/app/demo-day': typeof AppDemoDayRoute
   '/app/mentor': typeof AppMentorRoute
@@ -108,14 +154,20 @@ export interface FileRoutesByTo {
   '/app/notifications': typeof AppNotificationsRoute
   '/app/proposal': typeof AppProposalRoute
   '/app/startup': typeof AppStartupRoute
+  '/admin': typeof AdminIndexRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/admin/mentors': typeof AdminMentorsRoute
+  '/admin/proposals': typeof AdminProposalsRoute
+  '/admin/startups': typeof AdminStartupsRoute
+  '/admin/stories': typeof AdminStoriesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/app/ai': typeof AppAiRoute
   '/app/demo-day': typeof AppDemoDayRoute
   '/app/mentor': typeof AppMentorRoute
@@ -123,6 +175,7 @@ export interface FileRoutesById {
   '/app/notifications': typeof AppNotificationsRoute
   '/app/proposal': typeof AppProposalRoute
   '/app/startup': typeof AppStartupRoute
+  '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -132,6 +185,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/app'
     | '/auth'
+    | '/admin/mentors'
+    | '/admin/proposals'
+    | '/admin/startups'
+    | '/admin/stories'
+    | '/admin/users'
     | '/app/ai'
     | '/app/demo-day'
     | '/app/mentor'
@@ -139,12 +197,17 @@ export interface FileRouteTypes {
     | '/app/notifications'
     | '/app/proposal'
     | '/app/startup'
+    | '/admin/'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/auth'
+    | '/admin/mentors'
+    | '/admin/proposals'
+    | '/admin/startups'
+    | '/admin/stories'
+    | '/admin/users'
     | '/app/ai'
     | '/app/demo-day'
     | '/app/mentor'
@@ -152,6 +215,7 @@ export interface FileRouteTypes {
     | '/app/notifications'
     | '/app/proposal'
     | '/app/startup'
+    | '/admin'
     | '/app'
   id:
     | '__root__'
@@ -159,6 +223,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/app'
     | '/auth'
+    | '/admin/mentors'
+    | '/admin/proposals'
+    | '/admin/startups'
+    | '/admin/stories'
+    | '/admin/users'
     | '/app/ai'
     | '/app/demo-day'
     | '/app/mentor'
@@ -166,12 +235,13 @@ export interface FileRouteTypes {
     | '/app/notifications'
     | '/app/proposal'
     | '/app/startup'
+    | '/admin/'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
 }
@@ -212,6 +282,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/app/startup': {
       id: '/app/startup'
@@ -262,8 +339,63 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAiRouteImport
       parentRoute: typeof AppRoute
     }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/stories': {
+      id: '/admin/stories'
+      path: '/stories'
+      fullPath: '/admin/stories'
+      preLoaderRoute: typeof AdminStoriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/startups': {
+      id: '/admin/startups'
+      path: '/startups'
+      fullPath: '/admin/startups'
+      preLoaderRoute: typeof AdminStartupsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/proposals': {
+      id: '/admin/proposals'
+      path: '/proposals'
+      fullPath: '/admin/proposals'
+      preLoaderRoute: typeof AdminProposalsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/mentors': {
+      id: '/admin/mentors'
+      path: '/mentors'
+      fullPath: '/admin/mentors'
+      preLoaderRoute: typeof AdminMentorsRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminMentorsRoute: typeof AdminMentorsRoute
+  AdminProposalsRoute: typeof AdminProposalsRoute
+  AdminStartupsRoute: typeof AdminStartupsRoute
+  AdminStoriesRoute: typeof AdminStoriesRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminMentorsRoute: AdminMentorsRoute,
+  AdminProposalsRoute: AdminProposalsRoute,
+  AdminStartupsRoute: AdminStartupsRoute,
+  AdminStoriesRoute: AdminStoriesRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AppRouteChildren {
   AppAiRoute: typeof AppAiRoute
@@ -291,10 +423,20 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
