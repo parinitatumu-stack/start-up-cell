@@ -14,16 +14,433 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_evaluations: {
+        Row: {
+          created_at: string
+          feedback: Json
+          id: string
+          overall_score: number | null
+          scores: Json
+          startup_id: string
+        }
+        Insert: {
+          created_at?: string
+          feedback: Json
+          id?: string
+          overall_score?: number | null
+          scores: Json
+          startup_id: string
+        }
+        Update: {
+          created_at?: string
+          feedback?: Json
+          id?: string
+          overall_score?: number | null
+          scores?: Json
+          startup_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_evaluations_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      demo_day_registrations: {
+        Row: {
+          created_at: string
+          deck_url: string | null
+          id: string
+          pitch_title: string
+          presenter_name: string | null
+          slot: string | null
+          startup_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          deck_url?: string | null
+          id?: string
+          pitch_title: string
+          presenter_name?: string | null
+          slot?: string | null
+          startup_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          deck_url?: string | null
+          id?: string
+          pitch_title?: string
+          presenter_name?: string | null
+          slot?: string | null
+          startup_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demo_day_registrations_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jury_members: {
+        Row: {
+          designation: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          designation?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          designation?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      mentor_assignments: {
+        Row: {
+          assigned_at: string
+          id: string
+          mentor_id: string
+          startup_id: string
+        }
+        Insert: {
+          assigned_at?: string
+          id?: string
+          mentor_id: string
+          startup_id: string
+        }
+        Update: {
+          assigned_at?: string
+          id?: string
+          mentor_id?: string
+          startup_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_assignments_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentor_assignments_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: true
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentors: {
+        Row: {
+          bio: string | null
+          designation: string | null
+          domain: string
+          email: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          bio?: string | null
+          designation?: string | null
+          domain: string
+          email?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          bio?: string | null
+          designation?: string | null
+          domain?: string
+          email?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      milestones: {
+        Row: {
+          completed: boolean
+          id: string
+          name: string
+          position: number
+          startup_id: string
+          updated_at: string
+        }
+        Insert: {
+          completed?: boolean
+          id?: string
+          name: string
+          position?: number
+          startup_id: string
+          updated_at?: string
+        }
+        Update: {
+          completed?: boolean
+          id?: string
+          name?: string
+          position?: number
+          startup_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "milestones_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mvp_submissions: {
+        Row: {
+          build_summary: string | null
+          created_at: string
+          demo_url: string | null
+          id: string
+          repo_url: string | null
+          startup_id: string
+          status: string
+        }
+        Insert: {
+          build_summary?: string | null
+          created_at?: string
+          demo_url?: string | null
+          id?: string
+          repo_url?: string | null
+          startup_id: string
+          status?: string
+        }
+        Update: {
+          build_summary?: string | null
+          created_at?: string
+          demo_url?: string | null
+          id?: string
+          repo_url?: string | null
+          startup_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mvp_submissions_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          read: boolean
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          read?: boolean
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          read?: boolean
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          name: string | null
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id: string
+          name?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: []
+      }
+      proposals: {
+        Row: {
+          business_model: string | null
+          comments: string | null
+          created_at: string
+          id: string
+          problem_statement: string | null
+          solution: string | null
+          startup_id: string
+          status: string
+          target_audience: string | null
+        }
+        Insert: {
+          business_model?: string | null
+          comments?: string | null
+          created_at?: string
+          id?: string
+          problem_statement?: string | null
+          solution?: string | null
+          startup_id: string
+          status?: string
+          target_audience?: string | null
+        }
+        Update: {
+          business_model?: string | null
+          comments?: string | null
+          created_at?: string
+          id?: string
+          problem_statement?: string | null
+          solution?: string | null
+          startup_id?: string
+          status?: string
+          target_audience?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "proposals_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      startups: {
+        Row: {
+          business_model: string | null
+          created_at: string
+          description: string | null
+          domain: string
+          expected_impact: string | null
+          id: string
+          innovation_description: string | null
+          market_opportunity: string | null
+          name: string
+          problem_statement: string | null
+          solution: string | null
+          status: string
+          target_audience: string | null
+          user_id: string
+          vision: string | null
+        }
+        Insert: {
+          business_model?: string | null
+          created_at?: string
+          description?: string | null
+          domain: string
+          expected_impact?: string | null
+          id?: string
+          innovation_description?: string | null
+          market_opportunity?: string | null
+          name: string
+          problem_statement?: string | null
+          solution?: string | null
+          status?: string
+          target_audience?: string | null
+          user_id: string
+          vision?: string | null
+        }
+        Update: {
+          business_model?: string | null
+          created_at?: string
+          description?: string | null
+          domain?: string
+          expected_impact?: string | null
+          id?: string
+          innovation_description?: string | null
+          market_opportunity?: string | null
+          name?: string
+          problem_statement?: string | null
+          solution?: string | null
+          status?: string
+          target_audience?: string | null
+          user_id?: string
+          vision?: string | null
+        }
+        Relationships: []
+      }
+      success_stories: {
+        Row: {
+          achievement: string | null
+          created_at: string
+          description: string | null
+          domain: string
+          founder_name: string
+          id: string
+          startup_name: string
+          year: number | null
+        }
+        Insert: {
+          achievement?: string | null
+          created_at?: string
+          description?: string | null
+          domain: string
+          founder_name: string
+          id?: string
+          startup_name: string
+          year?: number | null
+        }
+        Update: {
+          achievement?: string | null
+          created_at?: string
+          description?: string | null
+          domain?: string
+          founder_name?: string
+          id?: string
+          startup_name?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "student" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +567,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["student", "admin"],
+    },
   },
 } as const
