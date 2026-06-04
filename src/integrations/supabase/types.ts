@@ -271,6 +271,33 @@ export type Database = {
         }
         Relationships: []
       }
+      pitch_checklist: {
+        Row: {
+          completed: boolean
+          id: string
+          name: string
+          position: number
+          startup_id: string
+          updated_at: string
+        }
+        Insert: {
+          completed?: boolean
+          id?: string
+          name: string
+          position?: number
+          startup_id: string
+          updated_at?: string
+        }
+        Update: {
+          completed?: boolean
+          id?: string
+          name?: string
+          position?: number
+          startup_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -342,10 +369,13 @@ export type Database = {
       startups: {
         Row: {
           business_model: string | null
+          contact_email: string | null
+          contact_number: string | null
           created_at: string
           description: string | null
           domain: string
           expected_impact: string | null
+          founder_name: string | null
           id: string
           innovation_description: string | null
           market_opportunity: string | null
@@ -354,15 +384,19 @@ export type Database = {
           solution: string | null
           status: string
           target_audience: string | null
+          team_members: string | null
           user_id: string
           vision: string | null
         }
         Insert: {
           business_model?: string | null
+          contact_email?: string | null
+          contact_number?: string | null
           created_at?: string
           description?: string | null
           domain: string
           expected_impact?: string | null
+          founder_name?: string | null
           id?: string
           innovation_description?: string | null
           market_opportunity?: string | null
@@ -371,15 +405,19 @@ export type Database = {
           solution?: string | null
           status?: string
           target_audience?: string | null
+          team_members?: string | null
           user_id: string
           vision?: string | null
         }
         Update: {
           business_model?: string | null
+          contact_email?: string | null
+          contact_number?: string | null
           created_at?: string
           description?: string | null
           domain?: string
           expected_impact?: string | null
+          founder_name?: string | null
           id?: string
           innovation_description?: string | null
           market_opportunity?: string | null
@@ -388,6 +426,7 @@ export type Database = {
           solution?: string | null
           status?: string
           target_audience?: string | null
+          team_members?: string | null
           user_id?: string
           vision?: string | null
         }
