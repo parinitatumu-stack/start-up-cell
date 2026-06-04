@@ -21,6 +21,7 @@ import { Route as AppNotificationsRouteImport } from './routes/app.notifications
 import { Route as AppMvpRouteImport } from './routes/app.mvp'
 import { Route as AppMentorRouteImport } from './routes/app.mentor'
 import { Route as AppDemoDayRouteImport } from './routes/app.demo-day'
+import { Route as AppChecklistRouteImport } from './routes/app.checklist'
 import { Route as AppAiRouteImport } from './routes/app.ai'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminStoriesRouteImport } from './routes/admin.stories'
@@ -88,6 +89,11 @@ const AppDemoDayRoute = AppDemoDayRouteImport.update({
   path: '/demo-day',
   getParentRoute: () => AppRoute,
 } as any)
+const AppChecklistRoute = AppChecklistRouteImport.update({
+  id: '/checklist',
+  path: '/checklist',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAiRoute = AppAiRouteImport.update({
   id: '/ai',
   path: '/ai',
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/admin/stories': typeof AdminStoriesRoute
   '/admin/users': typeof AdminUsersRoute
   '/app/ai': typeof AppAiRoute
+  '/app/checklist': typeof AppChecklistRoute
   '/app/demo-day': typeof AppDemoDayRoute
   '/app/mentor': typeof AppMentorRoute
   '/app/mvp': typeof AppMvpRoute
@@ -148,6 +155,7 @@ export interface FileRoutesByTo {
   '/admin/stories': typeof AdminStoriesRoute
   '/admin/users': typeof AdminUsersRoute
   '/app/ai': typeof AppAiRoute
+  '/app/checklist': typeof AppChecklistRoute
   '/app/demo-day': typeof AppDemoDayRoute
   '/app/mentor': typeof AppMentorRoute
   '/app/mvp': typeof AppMvpRoute
@@ -169,6 +177,7 @@ export interface FileRoutesById {
   '/admin/stories': typeof AdminStoriesRoute
   '/admin/users': typeof AdminUsersRoute
   '/app/ai': typeof AppAiRoute
+  '/app/checklist': typeof AppChecklistRoute
   '/app/demo-day': typeof AppDemoDayRoute
   '/app/mentor': typeof AppMentorRoute
   '/app/mvp': typeof AppMvpRoute
@@ -191,6 +200,7 @@ export interface FileRouteTypes {
     | '/admin/stories'
     | '/admin/users'
     | '/app/ai'
+    | '/app/checklist'
     | '/app/demo-day'
     | '/app/mentor'
     | '/app/mvp'
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/admin/stories'
     | '/admin/users'
     | '/app/ai'
+    | '/app/checklist'
     | '/app/demo-day'
     | '/app/mentor'
     | '/app/mvp'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/admin/stories'
     | '/admin/users'
     | '/app/ai'
+    | '/app/checklist'
     | '/app/demo-day'
     | '/app/mentor'
     | '/app/mvp'
@@ -332,6 +344,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDemoDayRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/checklist': {
+      id: '/app/checklist'
+      path: '/checklist'
+      fullPath: '/app/checklist'
+      preLoaderRoute: typeof AppChecklistRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/ai': {
       id: '/app/ai'
       path: '/ai'
@@ -399,6 +418,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AppRouteChildren {
   AppAiRoute: typeof AppAiRoute
+  AppChecklistRoute: typeof AppChecklistRoute
   AppDemoDayRoute: typeof AppDemoDayRoute
   AppMentorRoute: typeof AppMentorRoute
   AppMvpRoute: typeof AppMvpRoute
@@ -410,6 +430,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAiRoute: AppAiRoute,
+  AppChecklistRoute: AppChecklistRoute,
   AppDemoDayRoute: AppDemoDayRoute,
   AppMentorRoute: AppMentorRoute,
   AppMvpRoute: AppMvpRoute,
@@ -430,3 +451,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

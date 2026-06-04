@@ -6,9 +6,10 @@ import { PageHeader } from "@/components/AppShell";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { setMilestone } from "@/lib/startup";
+import { Upload, FileText } from "lucide-react";
 
 const SLOTS = ["10:00 AM", "11:00 AM", "01:00 PM", "02:30 PM", "04:00 PM"];
 
@@ -17,6 +18,9 @@ export const Route = createFileRoute("/app/demo-day")({ component: DemoDayPage }
 function DemoDayPage() {
   const { user } = useSession();
   const qc = useQueryClient();
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
   const { data } = useQuery({
     queryKey: ["demo", user?.id], enabled: !!user,
     queryFn: async () => {
@@ -34,6 +38,22 @@ function DemoDayPage() {
 
   if (!data?.startup) return <p className="text-muted-foreground">Register your startup first.</p>;
 
+  const uploadDeck = async (file: File) => {
+    if (!user) return;
+    setUploading(true);
+    try {
+      const path = `${user.id}/${data.startup.id}-${Date.now()}-${file.name}`;
+      const { error } = await supabase.storage.from("pitch-decks").upload(path, file, { upsert: true });
+      if (error) throw error;
+      const { data: signed } = await supabase.storage.from("pitch-decks").createSignedUrl(path, 60 * 60 * 24 * 365);
+      const url = signed?.signedUrl ?? path;
+      setForm((f) => ({ ...f, deck_url: url }));
+      toast.success("Deck uploaded.");
+    } catch (e) {
+      toast.error("Upload failed: " + (e as Error).message);
+    } finally { setUploading(false); }
+  };
+
   const save = async () => {
     if (data.reg) await supabase.from("demo_day_registrations").update(form).eq("id", data.reg.id);
     else await supabase.from("demo_day_registrations").insert({ ...form, startup_id: data.startup.id });
@@ -44,12 +64,28 @@ function DemoDayPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Demo Day" title="Book your pitch slot." description="Lock in your slot, upload your deck link, and meet the jury." />
+      <PageHeader eyebrow="Demo Day" title="Book your pitch slot." description="Lock in your slot, upload your deck, and meet the jury." />
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="card-soft p-8 lg:col-span-2 space-y-5">
           <div><label className="eyebrow">Pitch title</label><Input className="mt-2" value={form.pitch_title ?? ""} onChange={(e) => setForm({ ...form, pitch_title: e.target.value })} /></div>
           <div><label className="eyebrow">Presenter name</label><Input className="mt-2" value={form.presenter_name ?? ""} onChange={(e) => setForm({ ...form, presenter_name: e.target.value })} /></div>
-          <div><label className="eyebrow">Deck URL</label><Input className="mt-2" value={form.deck_url ?? ""} onChange={(e) => setForm({ ...form, deck_url: e.target.value })} placeholder="Google Slides, Notion, PDF link…" /></div>
+          <div>
+            <label className="eyebrow">Pitch deck</label>
+            <input ref={fileRef} type="file" accept=".pdf,.ppt,.pptx,.key"
+              className="hidden" onChange={(e) => e.target.files?.[0] && uploadDeck(e.target.files[0])} />
+            <div className="mt-2 flex gap-2 items-center">
+              <Button type="button" variant="outline" onClick={() => fileRef.current?.click()} disabled={uploading}>
+                <Upload className="w-4 h-4 mr-2" />{uploading ? "Uploading…" : form.deck_url ? "Replace deck" : "Upload deck"}
+              </Button>
+              {form.deck_url && (
+                <a href={form.deck_url} target="_blank" rel="noreferrer" className="text-aqua text-sm inline-flex items-center gap-1.5">
+                  <FileText className="w-4 h-4" />View uploaded deck
+                </a>
+              )}
+            </div>
+            <Input className="mt-2" placeholder="…or paste a link (Google Slides, Notion, PDF)"
+              value={form.deck_url ?? ""} onChange={(e) => setForm({ ...form, deck_url: e.target.value })} />
+          </div>
           <div>
             <label className="eyebrow">Slot</label>
             <Select value={form.slot ?? SLOTS[0]} onValueChange={(v) => setForm({ ...form, slot: v })}>
