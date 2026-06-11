@@ -41,8 +41,8 @@ function Landing() {
           FEDF · Problem 233 · KL Hyderabad
         </div>
 
-        <h1 className="font-display text-6xl md:text-8xl lg:text-9xl leading-[0.95] text-ivory tracking-tight">
-          Where <span className="italic text-aqua">ideas</span>
+        <h1 className="font-display text-6xl md:text-8xl lg:text-9xl leading-[0.95] text-ivory tracking-tight text-glow-soft">
+          Where <span className="italic text-aqua text-glow">ideas</span>
           <br />
           become <span className="italic text-ivory/40">ventures.</span>
         </h1>

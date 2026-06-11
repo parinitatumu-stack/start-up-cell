@@ -153,3 +153,13 @@
   color: var(--ivory);
   backdrop-filter: blur(8px);
 }
+
+.text-glow {
+  text-shadow:
+    0 0 12px color-mix(in oklab, var(--aqua) 55%, transparent),
+    0 0 32px color-mix(in oklab, var(--aqua) 35%, transparent),
+    0 0 64px color-mix(in oklab, var(--aqua) 20%, transparent);
+}
+.text-glow-soft {
+  text-shadow: 0 0 18px color-mix(in oklab, var(--aqua) 30%, transparent);
+}
