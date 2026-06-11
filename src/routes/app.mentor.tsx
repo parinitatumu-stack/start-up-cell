@@ -15,7 +15,7 @@ function MentorPage() {
       const { data: startup } = await supabase.from("startups").select("*").eq("user_id", user!.id).maybeSingle();
       if (!startup) return null;
       const { data: assign } = await supabase.from("mentor_assignments").select("*, mentors(*)").eq("startup_id", startup.id).maybeSingle();
-      const { data: suggestions } = await supabase.from("mentors").select("*").ilike("domain", `%${startup.domain ?? ""}%`);
+      const { data: suggestions } = await supabase.rpc("list_mentors_directory", { _domain: startup.domain ?? "" });
       return { startup, assign, suggestions: suggestions ?? [] };
     },
   });
