@@ -15,7 +15,7 @@ function MentorPage() {
       const { data: startup } = await supabase.from("startups").select("*").eq("user_id", user!.id).maybeSingle();
       if (!startup) return null;
       const { data: assign } = await supabase.from("mentor_assignments").select("*, mentors(*)").eq("startup_id", startup.id).maybeSingle();
-      const { data: suggestions } = await supabase.from("mentors").select("*").ilike("domain", `%${startup.domain ?? ""}%`);
+      const { data: suggestions } = await (supabase as any).rpc("list_mentors_directory", { _domain: startup.domain ?? "" });
       return { startup, assign, suggestions: suggestions ?? [] };
     },
   });
@@ -27,7 +27,7 @@ function MentorPage() {
         <div className="card-soft p-8">
           <p className="text-muted-foreground">No mentor assigned yet. Suggested matches based on your startup domain:</p>
           <div className="grid md:grid-cols-2 gap-4 mt-5">
-            {data?.suggestions?.length ? data.suggestions.map((m) => (
+            {data?.suggestions?.length ? data.suggestions.map((m: any) => (
               <div key={m.id} className="p-5 rounded-lg border border-border bg-card">
                 <div className="font-display text-xl">{m.name}</div>
                 <div className="text-sm text-muted-foreground">{m.designation} · {m.domain}</div>

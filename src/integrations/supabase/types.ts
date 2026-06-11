@@ -477,6 +477,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      list_mentors_directory: {
+        Args: { _domain?: string }
+        Returns: {
+          bio: string
+          designation: string
+          domain: string
+          id: string
+          name: string
+        }[]
+      }
     }
     Enums: {
       app_role: "student" | "admin"
