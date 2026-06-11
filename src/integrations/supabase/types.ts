@@ -136,6 +136,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "mentor_assignments_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors_directory"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "mentor_assignments_startup_id_fkey"
             columns: ["startup_id"]
             isOneToOne: true
@@ -467,7 +474,30 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      mentors_directory: {
+        Row: {
+          bio: string | null
+          designation: string | null
+          domain: string | null
+          id: string | null
+          name: string | null
+        }
+        Insert: {
+          bio?: string | null
+          designation?: string | null
+          domain?: string | null
+          id?: string | null
+          name?: string | null
+        }
+        Update: {
+          bio?: string | null
+          designation?: string | null
+          domain?: string | null
+          id?: string | null
+          name?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
@@ -476,16 +506,6 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
-      }
-      list_mentors_directory: {
-        Args: { _domain?: string }
-        Returns: {
-          bio: string
-          designation: string
-          domain: string
-          id: string
-          name: string
-        }[]
       }
     }
     Enums: {
