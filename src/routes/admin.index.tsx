@@ -3,18 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/AppShell";
 import { Rocket, FileText, GraduationCap, Sparkles, Users, Trophy } from "lucide-react";
+import { Stagger, StaggerItem } from "@/components/motion";
 
 export const Route = createFileRoute("/admin/")({ component: AdminOverview });
 
 function Stat({ icon: Icon, label, value }: { icon: typeof Rocket; label: string; value: string | number }) {
   return (
-    <div className="card-soft p-6">
-      <div className="flex items-center justify-between">
+    <div className="card-soft hover-lift p-6 relative overflow-hidden group">
+      <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-aqua/5 blur-2xl group-hover:bg-aqua/10 transition-all duration-500" />
+      <div className="relative flex items-center justify-between">
         <div>
           <p className="eyebrow">{label}</p>
           <div className="font-display text-4xl mt-1">{value}</div>
         </div>
-        <div className="w-12 h-12 rounded-xl bg-aqua/10 flex items-center justify-center"><Icon className="w-5 h-5 text-aqua" /></div>
+        <div className="w-12 h-12 rounded-xl bg-aqua/10 flex items-center justify-center ring-1 ring-aqua/20"><Icon className="w-5 h-5 text-aqua" /></div>
       </div>
     </div>
   );
@@ -46,14 +48,14 @@ function AdminOverview() {
   return (
     <>
       <PageHeader eyebrow="Admin overview" title="Cell at a glance" description="Realtime metrics across the entire incubation pipeline." />
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <Stat icon={Users} label="Students" value={data?.students ?? "—"} />
-        <Stat icon={Rocket} label="Startups" value={data?.startups ?? "—"} />
-        <Stat icon={FileText} label="Pending proposals" value={data?.pending ?? "—"} />
-        <Stat icon={Trophy} label="Approved proposals" value={data?.approved ?? "—"} />
-        <Stat icon={GraduationCap} label="Mentor assignments" value={`${data?.assigns ?? 0} / ${data?.mentors ?? 0}`} />
-        <Stat icon={Sparkles} label="Avg pitch readiness" value={data?.avgScore ? `${data.avgScore}/100` : "—"} />
-      </div>
+      <Stagger className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" stagger={0.06}>
+        <StaggerItem><Stat icon={Users} label="Students" value={data?.students ?? "—"} /></StaggerItem>
+        <StaggerItem><Stat icon={Rocket} label="Startups" value={data?.startups ?? "—"} /></StaggerItem>
+        <StaggerItem><Stat icon={FileText} label="Pending proposals" value={data?.pending ?? "—"} /></StaggerItem>
+        <StaggerItem><Stat icon={Trophy} label="Approved proposals" value={data?.approved ?? "—"} /></StaggerItem>
+        <StaggerItem><Stat icon={GraduationCap} label="Mentor assignments" value={`${data?.assigns ?? 0} / ${data?.mentors ?? 0}`} /></StaggerItem>
+        <StaggerItem><Stat icon={Sparkles} label="Avg pitch readiness" value={data?.avgScore ? `${data.avgScore}/100` : "—"} /></StaggerItem>
+      </Stagger>
     </>
   );
 }

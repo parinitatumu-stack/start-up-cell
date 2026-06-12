@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/AppShell";
 import { Progress } from "@/components/ui/progress";
 import { ArrowRight, CheckCircle2, Circle, Rocket, Sparkles, GraduationCap, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { FadeIn, Stagger, StaggerItem } from "@/components/motion";
 
 export const Route = createFileRoute("/app/")({
   component: StudentDashboard,
@@ -83,64 +84,75 @@ function StudentDashboard() {
           <StatBadge label="Proposal" value={proposal?.status ?? "none"} tone={proposal?.status === "approved" ? "good" : "neutral"} />
         </div>} />
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="card-soft p-6 lg:col-span-2">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <p className="eyebrow">Progress</p>
-              <h3 className="font-display text-2xl mt-1">{done} of {milestones.length} milestones</h3>
+      <Stagger className="grid lg:grid-cols-3 gap-6" stagger={0.08}>
+        <StaggerItem className="lg:col-span-2">
+          <div className="card-soft hover-lift p-7 h-full">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <p className="eyebrow">Progress</p>
+                <h3 className="font-display text-2xl mt-1">{done} of {milestones.length} milestones</h3>
+              </div>
+              <div className="text-right">
+                <div className="font-display text-5xl text-aqua text-glow-soft">{pct}%</div>
+              </div>
             </div>
-            <div className="text-right">
-              <div className="font-display text-4xl text-aqua">{pct}%</div>
-            </div>
+            <Progress value={pct} className="h-2 [&>div]:bg-aqua" />
+            <ul className="mt-6 space-y-1">
+              {milestones.map((m) => (
+                <li key={m.id} className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-muted/50 transition">
+                  {m.completed ? <CheckCircle2 className="w-4 h-4 text-aqua" /> : <Circle className="w-4 h-4 text-muted-foreground" />}
+                  <span className={m.completed ? "text-foreground" : "text-muted-foreground"}>{m.name}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <Progress value={pct} className="h-2 [&>div]:bg-aqua" />
-          <ul className="mt-6 space-y-2">
-            {milestones.map((m) => (
-              <li key={m.id} className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-muted/50">
-                {m.completed ? <CheckCircle2 className="w-4 h-4 text-aqua" /> : <Circle className="w-4 h-4 text-muted-foreground" />}
-                <span className={m.completed ? "text-foreground" : "text-muted-foreground"}>{m.name}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        </StaggerItem>
 
         <div className="space-y-6">
-          <div className="card-soft p-6">
-            <div className="flex items-center gap-2 mb-1"><Sparkles className="w-4 h-4 text-aqua" /><p className="eyebrow">AI Pitch Readiness</p></div>
-            {aiScore != null ? (
-              <>
-                <div className="font-display text-6xl text-navy">{Math.round(Number(aiScore))}<span className="text-xl text-muted-foreground">/100</span></div>
-                <Link to="/app/ai" className="text-aqua text-sm inline-flex items-center mt-2">View full report <ArrowRight className="w-3.5 h-3.5 ml-1" /></Link>
-              </>
-            ) : (
-              <>
-                <p className="text-muted-foreground text-sm mt-1">Run your first evaluation to see how investor-ready you are.</p>
-                <Link to="/app/ai" className="text-aqua text-sm inline-flex items-center mt-3">Run evaluation <ArrowRight className="w-3.5 h-3.5 ml-1" /></Link>
-              </>
-            )}
-          </div>
+          <StaggerItem>
+            <div className="card-navy hover-lift p-6 relative overflow-hidden">
+              <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-aqua/15 blur-2xl pointer-events-none" />
+              <div className="relative">
+                <div className="flex items-center gap-2 mb-1"><Sparkles className="w-4 h-4 text-aqua" /><p className="eyebrow">AI Pitch Readiness</p></div>
+                {aiScore != null ? (
+                  <>
+                    <div className="font-display text-6xl text-aqua text-glow-soft">{Math.round(Number(aiScore))}<span className="text-xl text-ivory/50">/100</span></div>
+                    <Link to="/app/ai" className="text-aqua text-sm inline-flex items-center mt-2 hover:text-aqua-bright">View full report <ArrowRight className="w-3.5 h-3.5 ml-1" /></Link>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-ivory/70 text-sm mt-1">Run your first evaluation to see how investor-ready you are.</p>
+                    <Link to="/app/ai" className="text-aqua text-sm inline-flex items-center mt-3 hover:text-aqua-bright">Run evaluation <ArrowRight className="w-3.5 h-3.5 ml-1" /></Link>
+                  </>
+                )}
+              </div>
+            </div>
+          </StaggerItem>
 
-          <div className="card-soft p-6">
-            <div className="flex items-center gap-2 mb-1"><GraduationCap className="w-4 h-4 text-aqua" /><p className="eyebrow">Mentor</p></div>
-            {mentor?.mentors ? (
-              <>
-                <div className="font-display text-2xl mt-1">{mentor.mentors.name}</div>
-                <div className="text-sm text-muted-foreground">{mentor.mentors.designation} · {mentor.mentors.domain}</div>
-              </>
-            ) : (
-              <p className="text-muted-foreground text-sm mt-1">An admin will assign a domain-matched mentor soon.</p>
-            )}
-          </div>
+          <StaggerItem>
+            <div className="card-soft hover-lift p-6">
+              <div className="flex items-center gap-2 mb-1"><GraduationCap className="w-4 h-4 text-aqua" /><p className="eyebrow">Mentor</p></div>
+              {mentor?.mentors ? (
+                <>
+                  <div className="font-display text-2xl mt-1">{mentor.mentors.name}</div>
+                  <div className="text-sm text-muted-foreground">{mentor.mentors.designation} · {mentor.mentors.domain}</div>
+                </>
+              ) : (
+                <p className="text-muted-foreground text-sm mt-1">An admin will assign a domain-matched mentor soon.</p>
+              )}
+            </div>
+          </StaggerItem>
 
-          <div className="card-soft p-6">
-            <div className="flex items-center gap-2 mb-1"><FileText className="w-4 h-4 text-aqua" /><p className="eyebrow">Proposal</p></div>
-            <div className="font-display text-2xl mt-1 capitalize">{proposal?.status ?? "Not submitted"}</div>
-            {proposal?.comments && <p className="text-sm text-muted-foreground mt-1">Reviewer: {proposal.comments}</p>}
-            <Link to="/app/proposal" className="text-aqua text-sm inline-flex items-center mt-2">Manage proposal <ArrowRight className="w-3.5 h-3.5 ml-1" /></Link>
-          </div>
+          <StaggerItem>
+            <div className="card-soft hover-lift p-6">
+              <div className="flex items-center gap-2 mb-1"><FileText className="w-4 h-4 text-aqua" /><p className="eyebrow">Proposal</p></div>
+              <div className="font-display text-2xl mt-1 capitalize">{proposal?.status ?? "Not submitted"}</div>
+              {proposal?.comments && <p className="text-sm text-muted-foreground mt-1">Reviewer: {proposal.comments}</p>}
+              <Link to="/app/proposal" className="text-aqua text-sm inline-flex items-center mt-2 hover:text-aqua-bright">Manage proposal <ArrowRight className="w-3.5 h-3.5 ml-1" /></Link>
+            </div>
+          </StaggerItem>
         </div>
-      </div>
+      </Stagger>
     </>
   );
 }
