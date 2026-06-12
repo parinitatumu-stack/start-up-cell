@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/AppShell";
 import { Progress } from "@/components/ui/progress";
 import { ArrowRight, CheckCircle2, Circle, Rocket, Sparkles, GraduationCap, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { FadeIn, Stagger, StaggerItem } from "@/components/motion";
 
 export const Route = createFileRoute("/app/")({
   component: StudentDashboard,
