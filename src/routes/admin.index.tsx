@@ -48,14 +48,14 @@ function AdminOverview() {
   return (
     <>
       <PageHeader eyebrow="Admin overview" title="Cell at a glance" description="Realtime metrics across the entire incubation pipeline." />
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <Stat icon={Users} label="Students" value={data?.students ?? "—"} />
-        <Stat icon={Rocket} label="Startups" value={data?.startups ?? "—"} />
-        <Stat icon={FileText} label="Pending proposals" value={data?.pending ?? "—"} />
-        <Stat icon={Trophy} label="Approved proposals" value={data?.approved ?? "—"} />
-        <Stat icon={GraduationCap} label="Mentor assignments" value={`${data?.assigns ?? 0} / ${data?.mentors ?? 0}`} />
-        <Stat icon={Sparkles} label="Avg pitch readiness" value={data?.avgScore ? `${data.avgScore}/100` : "—"} />
-      </div>
+      <Stagger className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" stagger={0.06}>
+        <StaggerItem><Stat icon={Users} label="Students" value={data?.students ?? "—"} /></StaggerItem>
+        <StaggerItem><Stat icon={Rocket} label="Startups" value={data?.startups ?? "—"} /></StaggerItem>
+        <StaggerItem><Stat icon={FileText} label="Pending proposals" value={data?.pending ?? "—"} /></StaggerItem>
+        <StaggerItem><Stat icon={Trophy} label="Approved proposals" value={data?.approved ?? "—"} /></StaggerItem>
+        <StaggerItem><Stat icon={GraduationCap} label="Mentor assignments" value={`${data?.assigns ?? 0} / ${data?.mentors ?? 0}`} /></StaggerItem>
+        <StaggerItem><Stat icon={Sparkles} label="Avg pitch readiness" value={data?.avgScore ? `${data.avgScore}/100` : "—"} /></StaggerItem>
+      </Stagger>
     </>
   );
 }
