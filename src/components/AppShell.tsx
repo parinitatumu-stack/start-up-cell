@@ -62,25 +62,31 @@ export function AppShell({ children, role }: { children: ReactNode; role: "stude
 
   return (
     <div className="min-h-screen flex bg-background">
-      <aside className="w-64 surface-navy shrink-0 flex flex-col">
-        <div className="px-6 py-6"><Logo className="text-ivory" /></div>
-        <div className="px-3 mb-2 mt-2 text-[10px] tracking-[0.25em] uppercase text-ivory/40 px-6">
+      <aside className="w-64 surface-navy shrink-0 flex flex-col border-r border-aqua/10">
+        <div className="px-6 py-7"><Logo className="text-ivory" /></div>
+        <div className="px-6 mb-3 text-[10px] tracking-[0.25em] uppercase text-ivory/40">
           {role === "admin" ? "Admin console" : "Founder workspace"}
         </div>
-        <nav className="flex-1 px-3 space-y-0.5">
+        <nav className="flex-1 px-3 space-y-1">
           {nav.map(({ to, label, icon: Icon }) => {
             const active = location.pathname === to || (to !== `/${role === "admin" ? "admin" : "app"}` && location.pathname.startsWith(to));
             return (
               <Link key={to} to={to}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition ${active ? "bg-aqua text-navy font-semibold" : "text-ivory/70 hover:bg-navy-2 hover:text-ivory"}`}>
-                <Icon className="w-4 h-4" />{label}
+                className={`group relative flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition-all duration-300 ${
+                  active
+                    ? "bg-gradient-to-r from-aqua/20 to-transparent text-ivory font-semibold"
+                    : "text-ivory/65 hover:text-ivory hover:bg-navy-2/60 hover:translate-x-0.5"
+                }`}>
+                {active && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-r bg-aqua shadow-[0_0_10px_var(--aqua)]" />}
+                <Icon className={`w-4 h-4 transition-colors ${active ? "text-aqua" : "text-ivory/50 group-hover:text-aqua"}`} />
+                {label}
               </Link>
             );
           })}
         </nav>
-        <div className="border-t border-aqua/10 p-4">
+        <div className="border-t border-aqua/10 p-4 mt-2">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-aqua/20 text-aqua flex items-center justify-center font-semibold">
+            <div className="w-9 h-9 rounded-full bg-aqua/15 text-aqua flex items-center justify-center font-semibold ring-1 ring-aqua/30">
               {(profile?.name ?? "?").slice(0,1).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
@@ -95,14 +101,14 @@ export function AppShell({ children, role }: { children: ReactNode; role: "stude
       </aside>
 
       <main className="flex-1 min-w-0 flex flex-col">
-        <header className="h-16 border-b border-border bg-card flex items-center justify-between px-8">
+        <header className="h-16 border-b border-border bg-card/80 backdrop-blur flex items-center justify-between px-8 sticky top-0 z-30">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {role === "admin" ? <ShieldCheck className="w-4 h-4 text-aqua" /> : <Sparkles className="w-4 h-4 text-aqua" />}
             <span className="text-foreground font-medium">{role === "admin" ? "Admin Console" : "Founder Workspace"}</span>
           </div>
-          <Link to="/app/notifications" className="relative inline-flex items-center justify-center w-9 h-9 rounded-md hover:bg-muted">
+          <Link to="/app/notifications" className="relative inline-flex items-center justify-center w-9 h-9 rounded-md hover:bg-muted transition">
             <Bell className="w-4 h-4 text-foreground" />
-            {unread > 0 && <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 bg-aqua text-navy text-[10px] font-bold rounded-full flex items-center justify-center">{unread}</span>}
+            {unread > 0 && <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 bg-aqua text-navy text-[10px] font-bold rounded-full flex items-center justify-center shadow-[0_0_10px_var(--aqua)]">{unread}</span>}
           </Link>
         </header>
         <div className="flex-1 p-8 max-w-7xl w-full mx-auto">{children}</div>
