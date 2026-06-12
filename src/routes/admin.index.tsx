@@ -3,18 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/AppShell";
 import { Rocket, FileText, GraduationCap, Sparkles, Users, Trophy } from "lucide-react";
+import { Stagger, StaggerItem } from "@/components/motion";
 
 export const Route = createFileRoute("/admin/")({ component: AdminOverview });
 
 function Stat({ icon: Icon, label, value }: { icon: typeof Rocket; label: string; value: string | number }) {
   return (
-    <div className="card-soft p-6">
-      <div className="flex items-center justify-between">
+    <div className="card-soft hover-lift p-6 relative overflow-hidden group">
+      <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-aqua/5 blur-2xl group-hover:bg-aqua/10 transition-all duration-500" />
+      <div className="relative flex items-center justify-between">
         <div>
           <p className="eyebrow">{label}</p>
           <div className="font-display text-4xl mt-1">{value}</div>
         </div>
-        <div className="w-12 h-12 rounded-xl bg-aqua/10 flex items-center justify-center"><Icon className="w-5 h-5 text-aqua" /></div>
+        <div className="w-12 h-12 rounded-xl bg-aqua/10 flex items-center justify-center ring-1 ring-aqua/20"><Icon className="w-5 h-5 text-aqua" /></div>
       </div>
     </div>
   );
