@@ -140,11 +140,15 @@ export function RequireRole({ role, children }: { role: "student" | "admin"; chi
 
 export function PageHeader({ eyebrow, title, description, action }: { eyebrow?: string; title: string; description?: string; action?: ReactNode }) {
   return (
-    <div className="flex items-end justify-between gap-6 mb-8 pb-6 border-b border-border">
+    <div className="flex items-end justify-between gap-6 mb-10 pb-7 border-b border-border animate-in fade-in slide-in-from-bottom-2 duration-500">
       <div>
-        {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
-        <h1 className="font-display text-4xl md:text-5xl tracking-tight text-foreground">{title}</h1>
-        {description && <p className="text-muted-foreground mt-2 max-w-2xl">{description}</p>}
+        {eyebrow && (
+          <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.22em] uppercase text-aqua font-mono-x mb-4 px-3 py-1 rounded-full border border-aqua/25 bg-aqua/5">
+            <span className="w-1 h-1 rounded-full bg-aqua shadow-[0_0_8px_var(--aqua)]" />{eyebrow}
+          </span>
+        )}
+        <h1 className="font-display text-4xl md:text-5xl tracking-tight text-foreground leading-[1.05]">{title}</h1>
+        {description && <p className="text-muted-foreground mt-3 max-w-2xl leading-relaxed">{description}</p>}
       </div>
       {action}
     </div>
