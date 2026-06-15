@@ -110,7 +110,7 @@ function StudentDashboard() {
 
         <div className="space-y-6">
           <StaggerItem>
-            <div className="card-navy hover-lift p-6 relative overflow-hidden">
+            <div className="card-feature hover-lift p-6 relative overflow-hidden">
               <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-aqua/15 blur-2xl pointer-events-none" />
               <div className="relative">
                 <div className="flex items-center gap-2 mb-1"><Sparkles className="w-4 h-4 text-aqua" /><p className="eyebrow">AI Pitch Readiness</p></div>
