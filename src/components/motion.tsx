@@ -1,5 +1,5 @@
-import { motion, useInView } from "motion/react";
-import { useRef, type ReactNode } from "react";
+import { motion, useInView, useMotionValue, useTransform, animate } from "motion/react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -70,21 +70,14 @@ export function Bar({ value, delay = 0 }: { value: number; delay?: number }) {
   );
 }
 
-export function CountUp({ to, duration = 1.2 }: { to: number; duration?: number }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-    >
-      <motion.span
-        initial={{ "--n": 0 } as never}
-        animate={{ "--n": to } as never}
-        transition={{ duration, ease }}
-        style={{ display: "inline-block" }}
-      >
-        {to}
-      </motion.span>
-    </motion.span>
-  );
+export function CountUp({ to, duration = 1.4, className = "" }: { to: number; duration?: number; className?: string }) {
+  const mv = useMotionValue(0);
+  const rounded = useTransform(mv, (v) => Math.round(v).toString());
+  const [val, setVal] = useState("0");
+  useEffect(() => {
+    const unsub = rounded.on("change", setVal);
+    const controls = animate(mv, to, { duration, ease: [0.22, 1, 0.36, 1] });
+    return () => { unsub(); controls.stop(); };
+  }, [to, duration, mv, rounded]);
+  return <span className={className}>{val}</span>;
 }
