@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/AppShell";
 import { Progress } from "@/components/ui/progress";
 import { ArrowRight, CheckCircle2, Circle, Rocket, Sparkles, GraduationCap, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FadeIn, Stagger, StaggerItem } from "@/components/motion";
+import { FadeIn, Stagger, StaggerItem, CountUp } from "@/components/motion";
 
 export const Route = createFileRoute("/app/")({
   component: StudentDashboard,
@@ -93,7 +93,7 @@ function StudentDashboard() {
                 <h3 className="font-display text-2xl mt-1">{done} of {milestones.length} milestones</h3>
               </div>
               <div className="text-right">
-                <div className="font-display text-5xl text-aqua text-glow-soft">{pct}%</div>
+                <div className="font-display text-5xl text-aqua text-glow-soft"><CountUp to={pct} />%</div>
               </div>
             </div>
             <Progress value={pct} className="h-2 [&>div]:bg-aqua" />
@@ -116,7 +116,7 @@ function StudentDashboard() {
                 <div className="flex items-center gap-2 mb-1"><Sparkles className="w-4 h-4 text-aqua" /><p className="eyebrow">AI Pitch Readiness</p></div>
                 {aiScore != null ? (
                   <>
-                    <div className="font-display text-6xl text-aqua text-glow-soft">{Math.round(Number(aiScore))}<span className="text-xl text-ivory/50">/100</span></div>
+                    <div className="font-display text-6xl text-aqua text-glow-soft"><CountUp to={Math.round(Number(aiScore))} /><span className="text-xl text-ivory/50">/100</span></div>
                     <Link to="/app/ai" className="text-aqua text-sm inline-flex items-center mt-2 hover:text-aqua-bright">View full report <ArrowRight className="w-3.5 h-3.5 ml-1" /></Link>
                   </>
                 ) : (
