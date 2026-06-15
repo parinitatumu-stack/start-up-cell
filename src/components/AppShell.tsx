@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Bell, LogOut, LayoutDashboard, Rocket, FileText, GraduationCap, Trophy, Sparkles, Users, ShieldCheck, BookOpen, ClipboardCheck, type LucideIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, type ReactNode } from "react";
+import { BackgroundFX } from "@/components/BackgroundFX";
 
 type NavItem = { to: string; label: string; icon: LucideIcon };
 
