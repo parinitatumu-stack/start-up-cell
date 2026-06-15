@@ -86,7 +86,7 @@ function StudentDashboard() {
 
       <Stagger className="grid lg:grid-cols-3 gap-6" stagger={0.08}>
         <StaggerItem className="lg:col-span-2">
-          <div className="card-soft hover-lift p-7 h-full">
+          <div className="card-glass hover-lift p-8 h-full">
             <div className="flex items-center justify-between mb-5">
               <div>
                 <p className="eyebrow">Progress</p>
