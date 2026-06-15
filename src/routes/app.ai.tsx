@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Sparkles, AlertTriangle, TrendingUp, Lightbulb, Shield, ArrowRight, Loader2 } from "lucide-react";
-import { FadeIn, Stagger, StaggerItem, Reveal, Bar } from "@/components/motion";
+import { FadeIn, Stagger, StaggerItem, Reveal, Bar, CountUp } from "@/components/motion";
 import { motion } from "motion/react";
 
 const SCORE_LABELS: Record<string, string> = {
@@ -182,7 +182,7 @@ function AiPage() {
                       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                       className="font-display text-[7rem] md:text-[8.5rem] leading-none text-aqua text-glow-soft"
                     >
-                      {overall}
+                      <CountUp to={overall} duration={1.6} />
                     </motion.div>
                     <div className="text-ivory/60 text-xl pb-3">/ 100</div>
                   </div>

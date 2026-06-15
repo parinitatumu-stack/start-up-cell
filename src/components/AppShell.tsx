@@ -7,6 +7,7 @@ import { Bell, LogOut, LayoutDashboard, Rocket, FileText, GraduationCap, Trophy,
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, type ReactNode } from "react";
 import { BackgroundFX } from "@/components/BackgroundFX";
+import { AnimatePresence, motion } from "motion/react";
 
 type NavItem = { to: string; label: string; icon: LucideIcon };
 
@@ -114,7 +115,19 @@ export function AppShell({ children, role }: { children: ReactNode; role: "stude
             {unread > 0 && <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 bg-aqua text-navy text-[10px] font-bold rounded-full flex items-center justify-center shadow-[0_0_10px_var(--aqua)]">{unread}</span>}
           </Link>
         </header>
-        <div className="flex-1 p-8 max-w-7xl w-full mx-auto relative z-10">{children}</div>
+        <div className="flex-1 p-8 max-w-7xl w-full mx-auto relative z-10">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </main>
     </div>
   );
