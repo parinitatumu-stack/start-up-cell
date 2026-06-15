@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Bell, LogOut, LayoutDashboard, Rocket, FileText, GraduationCap, Trophy, Sparkles, Users, ShieldCheck, BookOpen, ClipboardCheck, type LucideIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, type ReactNode } from "react";
+import { BackgroundFX } from "@/components/BackgroundFX";
 
 type NavItem = { to: string; label: string; icon: LucideIcon };
 
@@ -100,8 +101,10 @@ export function AppShell({ children, role }: { children: ReactNode; role: "stude
         </div>
       </aside>
 
-      <main className="flex-1 min-w-0 flex flex-col">
-        <header className="h-16 border-b border-border bg-card/80 backdrop-blur flex items-center justify-between px-8 sticky top-0 z-30">
+      <main className="flex-1 min-w-0 flex flex-col relative">
+        <BackgroundFX />
+        <header className="h-16 border-b border-border/60 bg-card/70 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-30 relative">
+          <span className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-aqua/40 to-transparent" />
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {role === "admin" ? <ShieldCheck className="w-4 h-4 text-aqua" /> : <Sparkles className="w-4 h-4 text-aqua" />}
             <span className="text-foreground font-medium">{role === "admin" ? "Admin Console" : "Founder Workspace"}</span>
@@ -111,7 +114,7 @@ export function AppShell({ children, role }: { children: ReactNode; role: "stude
             {unread > 0 && <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 bg-aqua text-navy text-[10px] font-bold rounded-full flex items-center justify-center shadow-[0_0_10px_var(--aqua)]">{unread}</span>}
           </Link>
         </header>
-        <div className="flex-1 p-8 max-w-7xl w-full mx-auto">{children}</div>
+        <div className="flex-1 p-8 max-w-7xl w-full mx-auto relative z-10">{children}</div>
       </main>
     </div>
   );

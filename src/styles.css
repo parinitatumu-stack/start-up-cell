@@ -267,3 +267,45 @@
   background: var(--aqua);
   box-shadow: 0 0 10px var(--aqua);
 }
+
+/* Ambient grid for content area */
+.bg-grid-soft {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--navy) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--navy) 7%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 78%);
+  animation: grid-pan 50s linear infinite;
+}
+@keyframes grid-pan {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 56px 56px, 56px 56px; }
+}
+
+/* Premium card variants */
+.card-glass {
+  background: linear-gradient(180deg,
+    color-mix(in oklab, white 92%, transparent) 0%,
+    color-mix(in oklab, var(--ivory) 86%, transparent) 100%);
+  border: 1px solid color-mix(in oklab, var(--navy) 10%, transparent);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.6) inset,
+    0 12px 30px -16px rgba(7,26,51,0.16),
+    0 40px 80px -40px rgba(7,26,51,0.22);
+}
+.card-feature {
+  position: relative;
+  border-radius: var(--radius-2xl);
+  background:
+    radial-gradient(ellipse at top right, color-mix(in oklab, var(--aqua) 16%, transparent), transparent 55%),
+    linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 60%, var(--navy) 100%);
+  border: 1px solid color-mix(in oklab, var(--aqua) 18%, transparent);
+  color: var(--ivory);
+  box-shadow:
+    0 1px 0 color-mix(in oklab, var(--aqua) 14%, transparent) inset,
+    0 30px 80px -40px color-mix(in oklab, var(--aqua) 30%, transparent),
+    0 50px 120px -40px rgba(7,26,51,0.5);
+  overflow: hidden;
+}

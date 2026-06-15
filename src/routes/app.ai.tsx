@@ -131,13 +131,12 @@ function AiPage() {
             <span className="w-1 h-1 rounded-full bg-aqua shadow-[0_0_8px_var(--aqua)]" />
             Gemini-powered evaluation
           </span>
-          <h1 className="font-display text-6xl md:text-7xl xl:text-8xl leading-[0.92] tracking-tight text-foreground">
-            Pitch<br />
-            <span className="italic text-aqua text-glow">Readiness</span><br />
-            Checker.
+          <h1 className="font-display text-6xl md:text-7xl xl:text-[5.5rem] leading-[0.95] tracking-tight text-foreground">
+            Are you<br />
+            <span className="italic text-aqua text-glow">investor-ready</span><span className="text-foreground">?</span>
           </h1>
           <p className="mt-7 text-lg text-muted-foreground leading-relaxed max-w-xl">
-            An investor-grade analysis of your startup across seven critical dimensions.
+            A Gemini-powered, investor-grade analysis of your startup across seven critical dimensions.
             Every run produces a fresh, specific report — not a checklist.
           </p>
 
@@ -159,7 +158,7 @@ function AiPage() {
 
         {/* RIGHT — premium evaluation card */}
         <FadeIn delay={0.15} className="lg:col-span-6">
-          <div className="relative rounded-2xl animated-gradient ring-aqua-glow p-8 md:p-10 text-ivory overflow-hidden">
+          <div className="relative card-feature p-8 md:p-10 overflow-hidden">
             {/* aqua glow blob */}
             <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-aqua/20 blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-aqua/10 blur-3xl pointer-events-none" />
