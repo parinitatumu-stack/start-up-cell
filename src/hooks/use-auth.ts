@@ -67,8 +67,23 @@ export function useProfile(user: User | null) {
     enabled: !!user,
     queryFn: async (): Promise<Profile | null> => {
       if (!user) return null;
-      const { data } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
-      return data as Profile | null;
+      const { data, error } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
+      if (error) throw error;
+      if (data) return data as Profile;
+
+      const fallbackProfile: Profile = {
+        id: user.id,
+        name: user.user_metadata?.full_name ?? user.user_metadata?.name ?? user.email?.split("@")[0] ?? null,
+        email: user.email ?? null,
+        role: "student",
+      };
+      const { data: created, error: createError } = await supabase
+        .from("profiles")
+        .insert(fallbackProfile)
+        .select("*")
+        .single();
+      if (createError) return fallbackProfile;
+      return created as Profile;
     },
   });
 }
