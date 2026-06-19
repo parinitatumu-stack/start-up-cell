@@ -4,7 +4,7 @@ import { useProfile, useSession } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Bell, LogOut, LayoutDashboard, Rocket, FileText, GraduationCap, Trophy, Sparkles, Users, ShieldCheck, BookOpen, ClipboardCheck, type LucideIcon } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, type ReactNode } from "react";
 import { BackgroundFX } from "@/components/BackgroundFX";
 import { AnimatePresence, motion } from "motion/react";
@@ -38,6 +38,7 @@ export function AppShell({ children, role }: { children: ReactNode; role: "stude
   const { user } = useSession();
   const { data: profile } = useProfile(user);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data: unread = 0 } = useQuery({
     queryKey: ["notif-count", user?.id],
@@ -50,8 +51,10 @@ export function AppShell({ children, role }: { children: ReactNode; role: "stude
   });
 
   const signOut = async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/", replace: true });
+    navigate({ to: "/auth", replace: true });
   };
 
   useEffect(() => {
@@ -134,8 +137,7 @@ export function AppShell({ children, role }: { children: ReactNode; role: "stude
 }
 
 export function RequireRole({ role, children }: { role: "student" | "admin"; children: ReactNode }) {
-  const { session, loading } = useSession();
-  const { user } = useSession();
+  const { session, user, loading } = useSession();
   const { data: profile, isLoading } = useProfile(user);
   const navigate = useNavigate();
 
