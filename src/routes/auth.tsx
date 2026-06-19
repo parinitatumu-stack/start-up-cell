@@ -18,7 +18,7 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const { mode: initialMode } = Route.useSearch();
   const navigate = useNavigate();
-  const { session } = useSession();
+  const { session, loading } = useSession();
   const [mode, setMode] = useState<"signin" | "signup">(initialMode as "signin" | "signup");
   const [tab, setTab] = useState<"student" | "admin">("student");
   const [email, setEmail] = useState("");
@@ -27,13 +27,14 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
+    if (loading) return;
     if (!session) return;
     (async () => {
       const { data } = await supabase.from("profiles").select("role").eq("id", session.user.id).maybeSingle();
       const role = data?.role ?? "student";
       navigate({ to: role === "admin" ? "/admin" : "/app", replace: true });
     })();
-  }, [session, navigate]);
+  }, [loading, session, navigate]);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -61,7 +62,7 @@ function AuthPage() {
     setBusy(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: window.location.origin + "/auth" },
+      options: { redirectTo: window.location.origin + "/app" },
     });
     if (error) {
       toast.error(error.message);
