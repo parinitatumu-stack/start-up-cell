@@ -21,6 +21,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data, error }) => {
       if (!mounted) return;
       if (error) {
+        void supabase.auth.signOut({ scope: "local" });
         setSession(null);
       } else {
         setSession(data.session);
