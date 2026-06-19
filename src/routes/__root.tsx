@@ -5,11 +5,11 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/hooks/use-auth";
 
 import appCss from "../styles.css?url";
-import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
@@ -58,15 +58,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      queryClient.invalidateQueries();
-    });
-    return () => subscription.unsubscribe();
-  }, [queryClient]);
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
       <Toaster richColors position="top-right" />
     </QueryClientProvider>
   );
